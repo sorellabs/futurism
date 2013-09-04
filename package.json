@@ -1,0 +1,25 @@
+{
+  "name": "futurism",
+  "version": "0.1.0",
+  "description": "Fast, sorta-sane and impure monadic Promise implementation.",
+  "main": "./src/futurism.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/killdream/futurism.git"
+  },
+  "keywords": [
+    "futures",
+    "promises",
+    "asynchronous",
+    "monads",
+    "fantasy-land"
+  ],
+  "author": "Quildreen Motta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/killdream/futurism/issues"
+  }
+}
