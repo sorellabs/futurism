@@ -38,7 +38,7 @@ Promise.of = function(x) {
   return new Promise().fulfill(x) }
 
 Promise.empty = function() {
-  return new Promise() }
+  return Promise.of(Nothing) }
 
 Promise.from = function(x) {
   return isPromise(x)?    x
@@ -60,26 +60,27 @@ Promise.prototype = {
     moveTo(false, x, this)
     return this }
 
-, map:
-  function _map(f) {
-    return !this.success?   this
-    :      /* otherwise */  Promise.of(f(this.value)) }
-
 , chain:
   function _chain(f) {
-    return !this.success?   this
-    :      /* otherwise */  f(this.value) }
+    return addBindings(this, f, k(this)) }
 
 , orElse:
   function _orElse(f) {
-    return this.success !== false?  this
-    :      /* otherwise */          f(this.value) }
+    return addBindings(this, k(this), f) }
+
+, map:
+  function _map(f) {
+    return this.chain(function(x){ return Promise.of(f(x)) }) }
 
 , concat:
   function _concat(promise) {
     return this.chain(function(a) {
                         return promise.chain(function(b) {
-                                               return Promise.of([a, b]) })})}
+                                               return Promise.of
+                                                      ( a === Nothing?  b
+                                                      : b === Nothing?  a
+                                                      : /* _ */         [a, b]
+                                                      )})})}
 }
 
 
@@ -90,6 +91,24 @@ function isPromise(x) {
 
 function isThenable(x) {
   return x && typeof x.then == 'function' }
+
+
+function identity(x) {
+  return x }
+
+
+function k(a) { return function(b) {
+  return a }}
+
+
+function addBindings(promise, onSuccess, onFailure) {
+  return promise.success?            onSuccess(promise.value)
+  :      promise.value === Nothing?  queue()
+  :      /* otherwise */             onFailure(promise.value)
+
+  function queue() {
+    promise.pending.push({ onSuccess: onSuccess, onFailure: onFailure })
+    return promise }}
 
 
 function promiseFromThenable(x) {
