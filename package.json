@@ -25,6 +25,8 @@
   "devDependencies": {
     "brofist": "~0.3.1",
     "brofist-minimal": "~0.2.0",
-    "chai": "~1.8.0"
+    "chai": "~1.8.0",
+    "pinky": "~0.1.3",
+    "brofist-tap": "~0.2.0"
   }
 }
