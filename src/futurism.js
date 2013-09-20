@@ -72,15 +72,6 @@ Promise.prototype = {
   function _map(f) {
     return this.chain(function(x){ return Promise.of(f(x)) }) }
 
-, concat:
-  function _concat(promise) {
-    return this.chain(function(a) {
-                        return promise.chain(function(b) {
-                                               return Promise.of
-                                                      ( a === Nothing?  b
-                                                      : b === Nothing?  a
-                                                      : /* _ */         [a, b]
-                                                      )})})}
 }
 
 
